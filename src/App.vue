@@ -1,8 +1,5 @@
 <template>
   <div id="app" class="container">
-    <h1>Image Replacer</h1>
-    <br>
-
     <convert-form></convert-form>
   </div>
 </template>
