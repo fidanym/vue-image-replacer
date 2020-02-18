@@ -103,7 +103,7 @@ export default {
 
       this.externalImages = this.post_body.match(/<img [^>]*src="[^"]*"[^>]*>/gm);
 
-      if (!this.externalImages.length) {
+      if (!this.externalImages || !this.externalImages.length) {
         alert('No images found')
         return
       }
