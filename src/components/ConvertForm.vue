@@ -72,7 +72,6 @@ export default {
       post_body: null,
       converted_body: null,
       externalImages: [],
-      externalURLs: [],
       dataMap: [],
       extracted: false,
       post_title: null
@@ -88,19 +87,17 @@ export default {
       const zipFilename = title + '.zip'
       const imageName = title + '-'
 
-      this.externalURLs.forEach(image => {
-        fetch(image)
+      this.dataMap.forEach(data => {
+        fetch(data.url)
           .then(res => res.blob())
           .then(blob => {
-            const extension = "." + image.split(".").pop()
-
-            zip.file(imageName + (count + 1) + extension, blob, {
+            zip.file(imageName + (count + 1) + data.extension, blob, {
               binary: true
             })
 
             count++
 
-            if (count === this.externalURLs.length) {
+            if (count === this.dataMap.length) {
               zip.generateAsync({ type: "blob" }).then(function(content) {
                 saveAs(content, zipFilename)
               })
@@ -123,12 +120,12 @@ export default {
         return
       }
 
-      this.externalURLs = this.externalImages.map(x => x.replace(/.*src="([^"]*)".*/, '$1'))
+      let extension_pattern = /\.([0-9a-z]+)(?:[\?#]|$)/i
 
       this.dataMap = this.externalImages.map((item, index) => {
         let url = item.replace(/.*src="([^"]*)".*/, '$1')
         let id = item.replace(/.*(wp-image-\d+).*/, '$1')
-        let extension = '.' + url.split('.').pop()
+        let extension = '.' + url.match(extension_pattern).pop()
 
         return {
           url: url,
@@ -177,7 +174,6 @@ export default {
       this.post_body = null
       this.converted_body = null
       this.externalImages = []
-      this.externalURLs = []
       this.dataMap = [],
       this.extracted = false,
       this.post_title = null
