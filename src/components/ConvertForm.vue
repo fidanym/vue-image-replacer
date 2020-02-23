@@ -91,6 +91,7 @@ export default {
         fetch(data.url)
           .then(res => res.blob())
           .then(blob => {
+            debugger
             zip.file(imageName + (count + 1) + data.extension, blob, {
               binary: true
             })
@@ -131,7 +132,8 @@ export default {
           url: url,
           image_id: id,
           index: index,
-          new_url_ending: (index + 1) + extension
+          new_url_ending: (index + 1) + extension,
+          extension: extension
         }
       })
 
